@@ -32,7 +32,6 @@ class Auth
     public function getAuthenticatedUser(): array
     {
         $user = app('auth')->user();
-
         return fractal($user, new UserTransformer())->toArray();
     }
 
