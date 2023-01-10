@@ -19,15 +19,20 @@ return new class extends Migration
     {
         Schema::create('babies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('parent_id');
+            $table->unsignedBigInteger('parent_id');
             $table->integer('birth_age');
             $table->integer('gender');
-            $table->integer('size_long');
-            $table->integer('size_weight');
+            $table->integer('size_long')->nullable();
+            $table->integer('size_weight')->nullable();
             $table->timestamp('birth_datetime');
             $table->integer('partus_type');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('parent_infos')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

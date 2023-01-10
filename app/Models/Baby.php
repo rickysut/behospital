@@ -55,7 +55,7 @@ class Baby extends Model implements AuthenticatableContract, AuthorizableContrac
                 'gender'        => 'required|numeric',
                 'size_long'     => 'required|numeric',
                 'size_weight'   => 'required|numeric',
-                'birth_datetime' => 'required|date_format:d/m/Y',
+                'birth_datetime' => 'required|date_format:d/m/Y H:i:s',
                 'partus_type'   => 'required|numeric'
             ]
             

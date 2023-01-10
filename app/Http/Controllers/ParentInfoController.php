@@ -3,83 +3,95 @@
 namespace App\Http\Controllers;
 
 use App\Parents;
+use App\Models\ParentInfo;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ParentInfoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Controller constructor.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \App\Parents  $accounts
      */
-    public function index()
+    public function __construct(Parents $parents)
     {
-        //
+        $this->parents = $parents;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Get all the parents.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        //
+        $parents = $this->parents->getParents($request);
+
+        return response()->json($parents, Response::HTTP_OK);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ParentInfo  $parentInfo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ParentInfo $parentInfo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ParentInfo  $parentInfo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ParentInfo $parentInfo)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Store a parent.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ParentInfo  $parentInfo
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, ParentInfo $parentInfo)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $parent = $this->parents->storeParent($request->all());
+
+        return response()->json($parent, Response::HTTP_CREATED);
+    }
+
+    /** 
+    * Get a parent.
+    *
+    * @param  int  $id
+    *
+    * @return \Illuminate\Http\JsonResponse
+    **/
+   public function show(int $id): JsonResponse
+   {
+       $parent = $this->parents->getParentById($id);
+
+       return response()->json($parent, Response::HTTP_OK);
+   }
+
+
+    /**
+     * Update the specified parent.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int                       $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $parent = $this->parents->updateParentById($id, $request->all());
+        if ($parent['data']){
+            return response()->json($parent, Response::HTTP_OK);
+        }
+        else 
+            return response()->json(["message" => "Parent not found"], Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a parent.
      *
-     * @param  \App\Models\ParentInfo  $parentInfo
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(ParentInfo $parentInfo)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        if ($this->parents->deleteParentById($id))
+            return response()->json(["message" => "Parent deleted"], Response::HTTP_OK);
+        else 
+            return response()->json(["message" => "Parent not found"], Response::HTTP_NOT_FOUND);
     }
 }

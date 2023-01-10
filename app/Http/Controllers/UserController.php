@@ -71,8 +71,12 @@ class UserController extends Controller
     public function update(Request $request, int $id): JsonResponse
     {
         $user = $this->accounts->updateUserById($id, $request->all());
+        if ($user['data']){
+            return response()->json($user, Response::HTTP_OK);
+        }
+        else 
+            return response()->json(["message" => "User not found"], Response::HTTP_NOT_FOUND);
 
-        return response()->json($user, Response::HTTP_OK);
     }
 
     /**
@@ -84,8 +88,9 @@ class UserController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $this->accounts->deleteUserById($id);
-
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        if ($this->accounts->deleteUserById($id))
+            return response()->json(["message" => "User deleted"], Response::HTTP_OK);
+        else 
+            return response()->json(["message" => "User not found"], Response::HTTP_NOT_FOUND);
     }
 }

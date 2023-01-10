@@ -7,6 +7,7 @@ use App\Events\UserUpdated;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 
 class Accounts
@@ -34,8 +35,13 @@ class Accounts
      */
     public function getUserById(int $id): array
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
+        if (!$user){
+            return array("error" => [
+                "message" => "User with id ".$id." not found!",
+                "status" =>  Response::HTTP_NOT_FOUND]);    
+        }
         return fractal($user, new UserTransformer())->toArray();
     }
 
@@ -74,18 +80,19 @@ class Accounts
      */
     public function updateUserById(int $id, array $attrs): array
     {
-        $user = User::findOrFail($id);
-        $user->fill($attrs);
+        $user = User::find($id);
+        if ($user){
+            $user->fill($attrs);
 
-        if (!$user->isValidFor('UPDATE')) {
-            throw new ValidationException($user->validator());
+            if (!$user->isValidFor('UPDATE')) {
+                throw new ValidationException($user->validator());
+            }
+
+            $changes = $user->getDirty();
+            $user->save();
+
+            event(new UserUpdated($user, $changes));
         }
-
-        $changes = $user->getDirty();
-        $user->save();
-
-        event(new UserUpdated($user, $changes));
-
         return fractal($user, new UserTransformer())->toArray();
     }
 
@@ -99,8 +106,10 @@ class Accounts
      */
     public function deleteUserById(int $id): bool
     {
-        $user = User::findOrFail($id);
-
+        $user = User::find($id);
+        if (!$user){
+            return false;    
+        }
         return (bool) $user->delete();
     }
 }

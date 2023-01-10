@@ -17,7 +17,7 @@ class ParentTransformer extends TransformerAbstract
     {
         return [
             'id' => (int) $parent->id,
-            'mother_name' => (string) $parent->mather_name,
+            'mother_name' => (string) $parent->mother_name,
             'father_name' => (string) $parent->father_name,
             'mother_age' => (int) $parent->mother_age,
             'father_age' => (int) $parent->father_age,

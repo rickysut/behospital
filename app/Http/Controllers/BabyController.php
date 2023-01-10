@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Babies;
+use App\Models\ParentInfo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,16 +33,7 @@ class BabyController extends Controller
         return response()->json($babies, Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a baby.
      *
@@ -51,53 +43,63 @@ class BabyController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if ($request->string('parent_id')){
+            $parentid = $request->string('parent_id');
+            $parent = ParentInfo::find($parentid);
+            if (!$parent) {
+                return response()->json(['error' => 'parent_id not found!'], Response::HTTP_NOT_FOUND);  
+            }
+        }
         $babies = $this->babies->storeBaby($request->all());
 
         return response()->json($babies, Response::HTTP_CREATED);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Birth  $birth
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Birth $birth)
-    {
-        //
-    }
+    /** 
+    * Get a baby.
+    *
+    * @param  int  $id
+    *
+    * @return \Illuminate\Http\JsonResponse
+    **/
+   public function show(int $id): JsonResponse
+   {
+       $baby = $this->babies->getBabyById($id);
+
+       return response()->json($baby, Response::HTTP_OK);
+   }
+
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Birth  $birth
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Birth $birth)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified baby.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Birth  $birth
-     * @return \Illuminate\Http\Response
+     * @param  int                       $id
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Birth $birth)
+    public function update(Request $request, int $id): JsonResponse
     {
-        //
+        $baby = $this->babies->updateBabyById($id, $request->all());
+        if ($baby['data']){
+            return response()->json($baby, Response::HTTP_OK);
+        }
+        else 
+            return response()->json(["message" => "Baby not found"], Response::HTTP_NOT_FOUND);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a baby.
      *
-     * @param  \App\Models\Birth  $birth
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Birth $birth)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        if ($this->babies->deleteBabyById($id))
+            return response()->json(["message" => "Baby deleted"], Response::HTTP_OK);
+        else 
+            return response()->json(["message" => "Baby not found"], Response::HTTP_NOT_FOUND);
     }
 }

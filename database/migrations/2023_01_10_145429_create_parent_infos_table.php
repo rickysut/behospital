@@ -20,11 +20,11 @@ return new class extends Migration
         Schema::create('parent_infos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('mother_name');
-            $table->string('father_name');
+            $table->string('father_name')->nullable();
             $table->integer('mother_age');
-            $table->integer('father_age');
-            $table->text('address');
-            $table->string('phone_number');
+            $table->integer('father_age')->nullable();
+            $table->text('address')->nullable();
+            $table->string('phone_number')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
