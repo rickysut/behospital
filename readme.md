@@ -1,28 +1,15 @@
-# Lumen API Starter
+# Lumen Backend Hospital
 
-A starter template to develop API with Lumen 8.
+A Backend for Halotec Indonesia skill test.
 
-This repo will not be maintained anymore because 👇
-
-> Note: In the years since releasing Lumen, PHP has made a variety of wonderful performance improvements. For this reason, along with the availability of Laravel Octane, we no longer recommend that you begin new projects with Lumen. Instead, we recommend always beginning new projects with Laravel.
-
-https://lumen.laravel.com/docs/9.x
-
-### Included Packages
-
-- [flipbox/lumen-generator@^8.0](https://github.com/flipboxstudio/lumen-generator)
-- [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
-- [spatie/laravel-fractal@^5.8](https://github.com/spatie/laravel-fractal)
-- [spatie/laravel-query-builder@^3.6](https://github.com/spatie/laravel-query-builder)
-- [tymon/jwt-auth@^1.0](https://github.com/tymondesigns/jwt-auth)
 
 ### Installation
 
-- Clone the Repo:
-    - `git clone git@github.com:munza/lumen-api-starter.git`
-    - `git clone https://github.com/munza/lumen-api-starter.git`
-- `cd lumen-api-starter`
-- SSH into the Docker container with `make ssh` and run the following.
+- Clone the Repo:comp
+    - `gh repo clone rickysut/behospital`
+
+- `cd behospital`
+- SSH into the Docker container with `make ssh` and run.
     - `composer create-project`
     - `php artisan key:generate`
     - `php artisan jwt:secret`
