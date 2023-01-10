@@ -19,7 +19,7 @@ class Accounts
      */
     public function getUsers(Request $request): array
     {
-        $users = User::filter($request)->paginate($request->get('per_page', 20));
+        $users = User::all();
 
         return fractal($users, new UserTransformer())->toArray();
     }

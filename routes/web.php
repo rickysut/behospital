@@ -45,3 +45,19 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($rou
     $router->patch('/{id:[0-9]+}', 'UserController@update');
     $router->delete('/{id:[0-9]+}', 'UserController@destroy');
 });
+
+$router->group(['middleware' => 'auth:api', 'prefix' => 'baby'], function ($router) {
+    $router->get('/', 'BabyController@index');
+    $router->post('/', 'BabyController@store');
+    $router->get('/{id:[0-9]+}', 'BabyController@show');
+    $router->put('/{id:[0-9]+}', 'BabyController@update');
+    $router->delete('/{id:[0-9]+}', 'BabyController@destroy');
+});
+
+$router->group(['middleware' => 'auth:api', 'prefix' => 'parentinfo'], function ($router) {
+    $router->get('/', 'ParentInfoController@index');
+    $router->post('/', 'ParentInfoController@store');
+    $router->get('/{id:[0-9]+}', 'ParentInfoController@show');
+    $router->put('/{id:[0-9]+}', 'ParentInfoController@update');
+    $router->delete('/{id:[0-9]+}', 'ParentInfoController@destroy');
+});
