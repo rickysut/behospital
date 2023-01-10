@@ -9,31 +9,12 @@ A Backend for Halotec Indonesia skill test.
     - `gh repo clone rickysut/behospital`
 
 - `cd behospital`
-- SSH into the Docker container with `make ssh` and run.
-    - `composer create-project`
-    - `php artisan key:generate`
-    - `php artisan jwt:secret`
-    - `php artisan migrate`
-- Exit from Docker container with `CTRL+C` or `exit`.
-- Rename `docker-compose.local.yaml` to `docker-compose.overridee.yaml`
-- Start the local development server with `make up`.
-- Run tests with `make dev-test`.
-- Run `make` to see available commands.
+- `composer create-project`
+- `php artisan key:generate`
+- `php artisan jwt:secret`
+- `php artisan migrate`
 
-#### Create new user
 
-- `make ssh`
-- `php artisan ti`
-- `App\Models\User::factory()->create(['email' => 'admin@localtest.me', 'password' => 'password'])`
-
-### Configuration
-
-- Edit `.env` file for environment variables.
-- Edit the files in `config` directory for application configuration.
-
-### Usage
-
-Always `ssh` into Docker container `app` by running `make ssh` before executing any `artisan` commands.
 
 #### Add a new resource endpoint
 
