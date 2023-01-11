@@ -20,6 +20,7 @@ class AuthController extends Controller
         $this->auth = $auth;
     }
 
+    
     /**
      * Get a JWT via given credentials.
      *

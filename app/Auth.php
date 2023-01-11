@@ -8,6 +8,8 @@ use App\Transformers\UserTransformer;
 
 class Auth
 {
+
+    
     /**
      * Authenticate a user by emailand password
      *
